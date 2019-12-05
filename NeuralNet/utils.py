@@ -41,19 +41,19 @@ def load_neural_net(filename):
         
         for i in range( 1, 1+num_hidden_nodes ): 
             values = [ float(n) for n in lines[i].split(' ') ]
-            weights[0].append( values[:-1] )
+            weights[0].append( values )
 
         for i in range( 1+num_hidden_nodes, 1+num_hidden_nodes+num_output_nodes ):
             values = [ float(n) for n in lines[i].split(' ') ]
-            weights[1].append(values[:-1] )
+            weights[1].append(values)
 
     # print(weights['w_input_hidden'])
     # print(weights['w_hidden_output'])
     # print('INPUT->HIDDEN SIZE: ', len(weights['w_input_hidden'][0]))
     # print('HIDDEN SIZE: ', len(weights['w_hidden_output'][0]))
 
-    print(weights[0])
-    print(weights[1])
+    # print(weights[0])
+    # print(weights[1])
 
     print('INPUT->HIDDEN WEIGHTS: (+1 FOR BIAS)', len(weights[0][0]))
     print('HIDDEN->OUTPUT WEIGHTS: (+1 FOR BIAS)', len(weights[1][0]))
@@ -79,8 +79,8 @@ def load_data(filename):
             inputs.append( values[:num_features] )
             targets.append( values[-num_outputs:])
     
-    print(inputs)
-    print(targets)
+    # print(inputs)
+    # print(targets)
     print('INPUT SIZE: ', len(inputs))
     print('TARGET SIZE: ', len(targets))
     return num_features, num_outputs, inputs, targets

@@ -1,5 +1,5 @@
 from utils import scalar_vector_product, vector_add, dot_product, sigmoid, sigmoid_derivative, load_data, load_neural_net
-from neural_net import network
+from neural_net import network, BiasNeuron
 import time 
 import pdb 
 
@@ -14,8 +14,10 @@ def BackPropagationLearner(inputs, weights, targets, net, learning_rate, epochs,
     # we only have weights for the hidden and output layers 
     for layer_idx, layer in enumerate(net[1:]):
         for node_idx, node in enumerate(layer):
-            node.weights = random_weights(min_value=0.0, max_value=1.0, num_weights=len(node.weights))
-            # node.weights = weights[layer_idx][node_idx]
+            # node.weights = random_weights(min_value=0.0, max_value=1.0, num_weights=len(node.weights))
+            node.weights = weights[layer_idx][node_idx]
+
+    # pdb.set_trace()
     # CHECK:
     # net[1][0].weights should match the first weights line in the neural network file
 
@@ -54,31 +56,50 @@ def BackPropagationLearner(inputs, weights, targets, net, learning_rate, epochs,
             # Compute outer layer delta
             # Error for the MSE cost function
             err = [t_val[i] - o_nodes[i].value for i in range(o_units)]
-            
+
+            print(err)
+
             delta[-1] = [sigmoid_derivative(o_nodes[i].value) * err[i] for i in range(o_units)]
             
             # Backward pass
             h_layers = n_layers - 2
             for i in range(h_layers, 0 , -1):
+                # pdb.set_trace()
                 layer = net[i]
                 h_units = len(layer)
                 nx_layer = net[i+1]
                 # weights from each ith layer node to each i + 1th layer node
-                w = [[node.weights[k] for node in nx_layer] for k in range(h_units)]
+                w = [ [node.weights[k] for node in nx_layer] for k in range(h_units) ]  +  [[ node.weights[-1] for node in net[2]]]   # include bias weight!
+                print(w)
                 delta[i] = [sigmoid_derivative(layer[j].value) * dot_product(w[j], delta[i+1]) for j in range(h_units)]
+
+            # h_layers = 1 
+            # layer = net[1]
+            # h_units = len(layer)    
+            # nx_layer = net[2]
+            # # weights from each ith layer node to each i + 1th layer node
+            # w = [ [node.weights[k] for node in nx_layer]+[node.weights[-1]] for k in range(h_units) ] # include bias weight!
+            # print(w)
+            # delta[i] = [sigmoid_derivative(layer[j].value) * dot_product(w[j], delta[i+1]) for j in range(h_units)]
+
+
+
+
 
             #  Update weights
             for i in range(1, n_layers):
                 layer = net[i]
-                inc = [node.value for node in net[i-1]]
+                inc = [node.value for node in net[i-1]] + [ BiasNeuron().value ] 
                 units = len(layer)
                 for j in range(units):
                     layer[j].weights = vector_add(layer[j].weights, scalar_vector_product(learning_rate * delta[i][j], inc))
+
+    pdb.set_trace()
                     
     return net
 
 
-def NeuralNetLearner(data_filename, network_filename, learning_rate=0.01, epochs=100, activation = sigmoid):
+def NeuralNetLearner(data_filename, network_filename, learning_rate=0.1, epochs=100, activation = sigmoid):
     """
     data_filename: String name of file in data directory
     network_filename: String name of file in net directory
@@ -121,8 +142,6 @@ def NeuralNetLearner(data_filename, network_filename, learning_rate=0.01, epochs
                 inc = [n.value for n in node.inputs]
                 in_val = dot_product(inc, node.weights)
                 node.value = node.activation(in_val)
-        # Hypothesis
-        # pdb.set_trace()
         o_nodes = learned_net[-1]
 
         if len(o_nodes) == 1: 
@@ -143,9 +162,9 @@ def test(trained_nn, test_data_filename):
 
     for idx, example in enumerate(inputs): 
         expected = targets[idx][0]
-        predicted = round( trained_nn(example) ) # 0 or 1
+        predicted = trained_nn(example)  # 0 or 1
         print(expected, predicted)
-        confusion_matrix[ int(predicted) ][ int(expected) ] += 1
+        confusion_matrix[ int(round( trained_nn(example) )) ][ int(expected) ] += 1
 
     overall_accuracy = (confusion_matrix[0][0] + confusion_matrix[1][1]) / (confusion_matrix[0][0] + confusion_matrix[0][1] + confusion_matrix[1][0]+ confusion_matrix[1][1])
     precision = confusion_matrix[0][0] / (confusion_matrix[0][0] + confusion_matrix[0][1])

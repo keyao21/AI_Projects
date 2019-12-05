@@ -1,4 +1,4 @@
-class Neuron:
+class Neuron(object):
     """
     Neuron class of NN
     inputs: List of incoming connections
@@ -9,6 +9,16 @@ class Neuron:
         self.inputs = inputs or []
         self.value = None
         self.activation = activation
+
+class BiasNeuron(Neuron): 
+    """
+    Bias Neuron class 
+    Should NOT have inputs (fixed to constant) 
+    No activation function 
+    """
+    def __init__(self, weights=None):
+        Neuron.__init__(self, activation=lambda x: x, weights=None, inputs=None)
+        self.value = -1 
 
 def network(input_units, num_hidden_nodes, output_units, activation):
     """
@@ -28,4 +38,8 @@ def network(input_units, num_hidden_nodes, output_units, activation):
             for k in net[i - 1]:
                 n.inputs.append(k)
                 n.weights.append(0)
+            # adding bias neuron input
+            n.inputs.append( BiasNeuron() )
+            n.weights.append(0)
+
     return net
