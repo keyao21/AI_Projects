@@ -5,82 +5,76 @@ import utils
 import pdb 
 
 
-# Initialize a network
-def initialize_network(n_inputs, n_hidden, n_outputs, weights= None):
+def create_network(n_inputs, n_hidden, n_outputs, weights= None):
+    """
+    initialize neural network with intiial set of weights 
+    (can be either trained or untrained)
+    and number of inputs, hidden nodes, and outputs
+    return network list of dicts ('weights' : list of lists of weights)
+    """
     network = list()
-    # hidden_layer = [{'weights':[round( random(), 3) for i in range(n_inputs + 1)]} for i in range(n_hidden)]
     hidden_layer = [
         { 'weights': weights[0][i] }
         for i in range(n_hidden)
     ]
-    # pdb.set_trace() 
     network.append(hidden_layer)
-    # output_layer = [{'weights':[round( random(),3 ) for i in range(n_hidden + 1)]} for i in range(n_outputs)]
     output_layer = [
         { 'weights': weights[1][i] }
         for i in range(n_outputs)
     ]
-
-
-    for i in range(n_hidden): 
-        print( ' '.join(str(x) for x in hidden_layer[i]['weights']) ) 
-
-    for i in range(n_outputs): 
-        print( ' '.join(str(x) for x in output_layer[i]['weights']) ) 
-
-    # print( hidden_layer)
-    # print( output_layer)
     network.append(output_layer)
     return network
  
-# Calculate neuron activation for an input
 def activate(weights, inputs):
-    activation = weights[-1]
+    # Neuron is the sum product of weights and inputs, plus -1 * bias weight
+    activation = weights[-1] *(-1)
     for i in range(len(weights)-1):
         activation += weights[i] * inputs[i]
-        # print( activation )
     return activation
  
-# Transfer neuron activation
-def transfer(activation):
-    # print( 1.0 / (1.0 + exp(-activation)) )
+def sigmoid(activation):
+    # Sigmoid activation function
     return 1.0 / (1.0 + exp(-activation))
  
-# Forward propagate input to a network output
+def sigmoid_derivative(output):
+    # Derivative of sigmoid 
+    # output is from sigmoid function
+    return output * (1.0 - output)
+ 
 def forward_propagate(network, row):
+    # Forward propagation
     inputs = row
     for layer in network:
         new_inputs = []
         for neuron in layer:
             activation = activate(neuron['weights'], inputs)
-            neuron['output'] = transfer(activation)
+            neuron['output'] = sigmoid(activation)
             new_inputs.append(neuron['output'])
         inputs = new_inputs
     return inputs
- 
-# Calculate the derivative of an neuron output
-def transfer_derivative(output):
-    return output * (1.0 - output)
- 
+
 def loss_function( y_hat, y ):
     # error function for scalar values 
     return (y_hat  - y)
 
-# Train a network for a fixed number of epochs
 def train_network(network, train, l_rate, n_epoch, n_inputs, n_outputs):
+    """
+    Given a number of epochs, iterate through each training example and learn 
+    the network weights through backpropagation
+    """
     for epoch in range(n_epoch):
         sum_error = 0
         for row in train:
             outputs = forward_propagate(network, row)
-            expected = [0 for i in range(n_outputs)]
+            # expected = [0 for i in range(n_outputs)]
             # print( row[-1] )
             # expected[int(row[-1])] = 1
 
-            expected = row[-n_outputs:]
-            sum_error += sum([(expected[i]-outputs[i])**2 for i in range(len(expected))])
             # pdb.set_trace()
+            expected = row[-n_outputs:]
+            sum_error += sum([(expected[i]-outputs[i]) for i in range(len(expected))])
 
-            # backward_propagate_error
+            # backward propagate error
             for i in reversed(range(len(network))):
                 layer = network[i]
                 errors = list()
@@ -100,7 +94,7 @@ def train_network(network, train, l_rate, n_epoch, n_inputs, n_outputs):
                 # print( errors )
                 for j in range(len(layer)):
                     neuron = layer[j]
-                    neuron['delta'] = errors[j] * transfer_derivative(neuron['output'])
+                    neuron['delta'] = errors[j] * sigmoid_derivative(neuron['output'])
 
             # update weights
             for i in range(len(network)):
@@ -108,19 +102,15 @@ def train_network(network, train, l_rate, n_epoch, n_inputs, n_outputs):
                 if i != 0:
                     inputs = [neuron['output'] for neuron in network[i - 1]]
                 for neuron in network[i]:
-                    for j in range(len(inputs)):
+                    for j in range(len(inputs)): 
                         neuron['weights'][j] += l_rate * neuron['delta'] * inputs[j]
-                        # pdb.set_trace()
                     neuron['weights'][-1] += l_rate * neuron['delta']
+                    # pdb.set_trace()
+        print('epoch :{0:d}, error: {1:.5f}'.format(epoch, sum_error)) 
 
-        print('>epoch={0:d}, error={1:.2f}'.format(epoch, sum_error)) 
-
-# Make a prediction with a network
-def predict(network, row, num_outputs):
+def predict(network, row):
+    # Make a prediction with a network
     outputs = forward_propagate(network, row)
-    # pdb.set_trace()
-    if num_outputs == 1: 
-        return outputs[0] 
-    return outputs.index(max(outputs))
+    return outputs 
 
 
