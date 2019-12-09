@@ -9,7 +9,7 @@ def train_neural_net(l_rate, n_epoch, training_data_filename, init_network_filen
     num_features, num_outputs, dataset = utils.load_data(training_data_filename) 
 
     n_inputs = len(dataset[0]) - num_outputs
-    network = create_network(num_input_nodes, num_hidden_nodes, num_output_nodes, weights)
+    network = create_network(num_hidden_nodes, num_output_nodes, weights)
     train_network(network, dataset, l_rate, n_epoch , num_features, num_outputs)
     for layer in network:
         print(layer)

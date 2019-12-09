@@ -35,11 +35,21 @@ def load_neural_net(filename):
         
         for i in range( 1, 1+num_hidden_nodes ): 
             values = [ float(n) for n in lines[i].split(' ') ]
-            weights[0].append( values )
+
+            _bias_weight = values[0]
+            _weights = values[1:]
+            values_bias_to_end = _weights + [_bias_weight]
+
+            weights[0].append( values_bias_to_end )
 
         for i in range( 1+num_hidden_nodes, 1+num_hidden_nodes+num_output_nodes ):
             values = [ float(n) for n in lines[i].split(' ') ]
-            weights[1].append(values)
+
+            _bias_weight = values[0]
+            _weights = values[1:]
+            values_bias_to_end = _weights + [_bias_weight]
+
+            weights[1].append(values_bias_to_end)
 
     print('INPUT->HIDDEN WEIGHTS: (+1 FOR BIAS)', len(weights[0][0]))
     print('HIDDEN->OUTPUT WEIGHTS: (+1 FOR BIAS)', len(weights[1][0]))
@@ -55,7 +65,10 @@ def save_neural_net(output_filename, num_input_nodes, num_hidden_nodes, num_outp
         f.write(' '.join( [str(num_input_nodes), str(num_hidden_nodes), str(num_output_nodes)]  ) + os.linesep)
         for layers in weights:
             for layer in layers: 
-                f.write(' '.join( "{0:.3f}".format(round(x, 3))  for x in layer ) + os.linesep)
+                _bias_weight = layer[-1]
+                _weights = layer[:-1]
+                values_bias_to_end = [_bias_weight] + _weights 
+                f.write(' '.join( "{0:.3f}".format(round(x, 3))  for x in values_bias_to_end ) + os.linesep)
             
 
 def calc_accuracy(A, B, C, D): 

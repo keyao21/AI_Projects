@@ -42,15 +42,15 @@ CONFIGS = {
 	'WDBC_mini' : {
 		'TRAIN': {
 			'l_rate' : WDBC_LRATE,
-	        'n_epoch' : WDBC_NEPOCH,
+	        'n_epoch' : 1,
 	        'init_network_filename' :'sample.NNWDBC.init',
 	        'training_data_filename' : 'wdbc.mini_train',
-	        'trained_network_filename' : 'kevin.NNWDBC.{0}.{1}.mini_trained'.format( str(WDBC_LRATE).split('.')[1], WDBC_NEPOCH )
+	        'trained_network_filename' : 'kevin.NNWDBC.{0}.1.mini_trained'.format( str(WDBC_LRATE).split('.')[1], 1 )
 		}, 
 		'TEST': {
-			'trained_network_filename' : 'kevin.NNWDBC.{0}.{1}.trained'.format( str(WDBC_LRATE).split('.')[1], WDBC_NEPOCH ),
+			'trained_network_filename' : 'kevin.NNWDBC.{0}.1.trained'.format( str(WDBC_LRATE).split('.')[1], 1 ),
 			'testing_data_filename'  : 'wdbc.test',
-			'results_filename' : 'kevin.NNWDBC.{0}.{1}.results'.format( str(WDBC_LRATE).split('.')[1], WDBC_NEPOCH )
+			'results_filename' : 'kevin.NNWDBC.{0}.1.results'.format( str(WDBC_LRATE).split('.')[1], 1 )
 		}
 	},
 

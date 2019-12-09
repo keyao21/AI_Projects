@@ -7,7 +7,7 @@ import pdb
 def test_neural_net( trained_network_filename, testing_data_filename, results_filename): 
     num_input_nodes, num_hidden_nodes, num_output_nodes, weights = utils.load_neural_net(trained_network_filename)
     num_features, num_outputs, test_dataset = utils.load_data(testing_data_filename) 
-    network = create_network(num_input_nodes, num_hidden_nodes, num_output_nodes, weights)
+    network = create_network(num_hidden_nodes, num_output_nodes, weights)
     # confusion_matrices[output_idx][ predicted ][ expected ]
     confusion_matrices = [
             [
