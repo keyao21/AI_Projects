@@ -5,7 +5,7 @@ WDBC_NEPOCH = 100
 GRADES_LRATE = 0.05
 GRADES_NEPOCH = 100
 
-AUDIT_LRATE = 0.1
+AUDIT_LRATE = 0.05
 AUDIT_NEPOCH = 100
 
 CONFIGS = {
@@ -61,30 +61,13 @@ CONFIGS = {
 			'l_rate' : AUDIT_LRATE,
 	        'n_epoch' : AUDIT_NEPOCH,
 	        'init_network_filename' : 'kevin.NNAudit.init',
-	        'training_data_filename' : 'auditrisk.train',
+	        'training_data_filename' : 'auditrisk.processed.train',
 	        'trained_network_filename' : 'kevin.NNAudit.{0}.{1}.trained'.format( str(AUDIT_LRATE).split('.')[1], AUDIT_NEPOCH )
 		}, 
 		'TEST' : {
 			'trained_network_filename' : 'kevin.NNAudit.{0}.{1}.trained'.format( str(AUDIT_LRATE).split('.')[1], AUDIT_NEPOCH ),
-	        'testing_data_filename'  : 'auditrisk.test', 
+	        'testing_data_filename'  : 'auditrisk.processed.test', 
 	     	'results_filename' : 'kevin.NNAudit.{0}.{1}.results'.format( str(AUDIT_LRATE).split('.')[1], AUDIT_NEPOCH )   
 		}
 	}
-
-
-	# # CHANGE THIS STUFF TO LOAD HOUSING NETWORK AND STUFF
-	# 'Housing' : {
-	# 	'TRAIN': {
-	# 		'l_rate' : HOUSING_LRATE,
-	#         'n_epoch' : HOUSING_NEPOCH,
-	#         'init_network_filename' : 'kevin.NNHousing.init',
-	#         'training_data_filename' : 'housing.process.train',
-	#         'trained_network_filename' : 'kevin.NNHousing.{0}.{1}.trained'.format( str(HOUSING_LRATE).split('.')[1], HOUSING_NEPOCH )
-	# 	}, 
-	# 	'TEST' : {
-	# 		'trained_network_filename' : 'kevin.NNHousing.{0}.{1}.trained'.format( str(HOUSING_LRATE).split('.')[1], HOUSING_NEPOCH ),
-	#         'testing_data_filename'  : 'housing.process.test', 
-	#      	'results_filename' : 'kevin.NNHousing.{0}.{1}.results'.format( str(HOUSING_LRATE).split('.')[1], HOUSING_NEPOCH )   
-	# 	}
-	# }
 }
