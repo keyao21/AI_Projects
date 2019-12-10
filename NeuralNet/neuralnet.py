@@ -3,7 +3,7 @@ import utils
 import pdb 
 
 
-def create_network(n_hidden, num_outputs, weights ):
+def create_network(num_hidden, num_outputs, weights ):
     """
     initialize neural network with intiial set of weights 
     (can be either trained or untrained)
@@ -13,7 +13,7 @@ def create_network(n_hidden, num_outputs, weights ):
     network = list()
     hidden_layer = [
         { 'weights': weights[0][i] }
-        for i in range(n_hidden)
+        for i in range(num_hidden)
     ]
     network.append(hidden_layer)
     output_layer = [

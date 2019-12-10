@@ -15,8 +15,8 @@ AUDIT_NEPOCH = 100
 CONFIGS = {
 	'WDBC' : {
 		'TRAIN': {
-			'l_rate' : WDBC_LRATE,
-	        'n_epoch' : WDBC_NEPOCH,
+			'learning_rate' : WDBC_LRATE,
+	        'num_epoch' : WDBC_NEPOCH,
 	        'init_network_filename' :'sample.NNWDBC.init',
 	        'training_data_filename' : 'wdbc.train',
 	        'trained_network_filename' : 'kevin.NNWDBC.{0}.{1}.trained'.format( str(WDBC_LRATE).split('.')[1], WDBC_NEPOCH )
@@ -29,8 +29,8 @@ CONFIGS = {
 	}, 
 	'Grades' : {
 		'TRAIN': {
-			'l_rate' : GRADES_LRATE,
-	        'n_epoch' : GRADES_NEPOCH,
+			'learning_rate' : GRADES_LRATE,
+	        'num_epoch' : GRADES_NEPOCH,
 	        'init_network_filename' : 'sample.NNGrades.init',
 	        'training_data_filename' : 'grades.train',
 	        'trained_network_filename' : 'kevin.NNGrades.{0}.{1}.trained'.format( str(GRADES_LRATE).split('.')[1], GRADES_NEPOCH )
@@ -45,8 +45,8 @@ CONFIGS = {
 	# CHANGE THIS STUFF TO LOAD Audit risk NETWORK AND STUFF
 	'WDBC_mini' : {
 		'TRAIN': {
-			'l_rate' : WDBC_LRATE,
-	        'n_epoch' : 1,
+			'learning_rate' : WDBC_LRATE,
+	        'num_epoch' : 1,
 	        'init_network_filename' :'sample.NNWDBC.init',
 	        'training_data_filename' : 'wdbc.mini_train',
 	        'trained_network_filename' : 'kevin.NNWDBC.{0}.1.mini_trained'.format( str(WDBC_LRATE).split('.')[1], 1 )
@@ -62,8 +62,8 @@ CONFIGS = {
 	# CHANGE THIS STUFF TO LOAD Audit risk NETWORK AND STUFF
 	'Audit' : {
 		'TRAIN': {
-			'l_rate' : AUDIT_LRATE,
-	        'n_epoch' : AUDIT_NEPOCH,
+			'learning_rate' : AUDIT_LRATE,
+	        'num_epoch' : AUDIT_NEPOCH,
 	        'init_network_filename' : 'kevin.NNAudit.init',
 	        'training_data_filename' : 'auditrisk.processed.train',
 	        'trained_network_filename' : 'kevin.NNAudit.{0}.{1}.trained'.format( str(AUDIT_LRATE).split('.')[1], AUDIT_NEPOCH )
