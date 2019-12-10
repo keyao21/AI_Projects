@@ -43,9 +43,9 @@ if __name__ == '__main__':
     if args.demo in CONFIGS.keys(): 
         test_neural_net( **CONFIGS[ args.demo ]['TEST'] )
     else: 
-        trained_network_filename = input("Output network filename: ")
-        testing_data_filename = input("Test data filename: ")
-        results_filename = input("Results filename: ")
+        trained_network_filename = str(input("Output network filename: "))
+        testing_data_filename = str(input("Test data filename: "))
+        results_filename = str(input("Results filename: "))
         test_neural_net( trained_network_filename, testing_data_filename, results_filename)
         
 

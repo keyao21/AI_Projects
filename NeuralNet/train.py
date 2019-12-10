@@ -27,10 +27,10 @@ if __name__ == '__main__':
     if args.demo in CONFIGS.keys(): 
         train_neural_net( **CONFIGS[ args.demo ]['TRAIN'] )
     else: 
-        init_network_filename = input("Initial network filename: ")
-        training_data_filename = input("Training data filename: ")
-        trained_network_filename = input("Output network filename: ")
-        l_rate = int(input("Learning rate: "))
+        init_network_filename = str(input("Initial network filename: "))
+        training_data_filename = str(input("Training data filename: "))
+        trained_network_filename = str(input("Output network filename: "))
+        l_rate = float(input("Learning rate: "))
         n_epoch = int(input("Number of Epochs: "))
         train_neural_net( l_rate, n_epoch, training_data_filename, init_network_filename, trained_network_filename )
 

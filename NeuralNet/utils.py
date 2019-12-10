@@ -1,9 +1,7 @@
 from random import seed
 from random import random
+from config import * 
 import os 
-DATA_DIR_PATH = './data'
-NET_DIR_PATH = './nets'
-RESULTS_DIR_PATH = './results'
 
 def load_data(filename): 
     """Load data
@@ -88,8 +86,9 @@ def calc_recall(A, B, C, D):
     except: recall = 0.0
     return recall 
 
-def calc_f1(A, B, C, D): 
-    try: f1 = (2*calc_precision(A,B,C,D)*calc_recall(A,B,C,D)) / (calc_precision(A,B,C,D)+calc_recall(A,B,C,D))
+def calc_f1(precision, recall): 
+    try: f1 = (2*precision*recall) / (precision+recall)
+    # try: f1 = (2*calc_precision(A,B,C,D)*calc_recall(A,B,C,D)) / (calc_precision(A,B,C,D)+calc_recall(A,B,C,D))
     except: f1 = 0.0
     return f1 
 
@@ -125,7 +124,7 @@ def calc_metrics( confusion_matrices ):
         overall_accuracy = calc_accuracy( A, B, C, D)
         overall_precision = calc_precision( A, B, C, D)
         overall_recall = calc_recall( A, B, C, D)
-        overall_f1 = calc_f1( A, B, C, D )
+        overall_f1 = calc_f1( overall_precision, overall_recall )
         
         ### performing precalculations for micro and macro level metrics ###
         micro_sum_A += A
@@ -153,24 +152,11 @@ def calc_metrics( confusion_matrices ):
         outputs_metrics.append( [A, B, C, D, overall_accuracy, overall_precision, overall_recall, overall_f1] )
 
 
-    print("\nCalculating macro output metrics... ")
-    macro_overall_accuracy *= (1.0 / len(confusion_matrices) )
-    macro_precision *= (1.0 / len(confusion_matrices) )
-    macro_recall *= (1.0 / len(confusion_matrices) )
-    macro_f1 *= (1.0 / len(confusion_matrices) )
-    print("="*30)
-    print("macro overall accuracy:", macro_overall_accuracy)
-    print("macro precision:", macro_precision)
-    print("macro recall:", macro_recall)
-    print("macro f1:", macro_f1)
-    outputs_metrics.append( [macro_overall_accuracy, macro_precision, macro_recall, macro_f1] )
-
     print("\nCalculating micro output metrics... ")
     micro_overall_accuracy = calc_accuracy( micro_sum_A, micro_sum_B, micro_sum_C, micro_sum_D )
     micro_precision = calc_precision( micro_sum_A, micro_sum_B, micro_sum_C, micro_sum_D )
     micro_recall = calc_recall( micro_sum_A, micro_sum_B, micro_sum_C, micro_sum_D )
-    micro_f1 = calc_f1( micro_sum_A, micro_sum_B, micro_sum_C, micro_sum_D )
-    
+    micro_f1 = calc_f1( micro_precision, micro_recall )
     print("="*30)
     print("A:", micro_sum_A )
     print("B:", micro_sum_B )
@@ -181,6 +167,19 @@ def calc_metrics( confusion_matrices ):
     print("micro_recall:", micro_recall )
     print("micro_f1:", micro_f1 )
     outputs_metrics.append( [micro_overall_accuracy, micro_precision, micro_recall, micro_f1] )
+
+    print("\nCalculating macro output metrics... ")
+    macro_overall_accuracy *= (1.0 / len(confusion_matrices) )
+    macro_precision *= (1.0 / len(confusion_matrices) )
+    macro_recall *= (1.0 / len(confusion_matrices) )
+    # macro_f1 *= (1.0 / len(confusion_matrices) )
+    macro_f1 = calc_f1( macro_precision, macro_recall)
+    print("="*30)
+    print("macro overall accuracy:", macro_overall_accuracy)
+    print("macro precision:", macro_precision)
+    print("macro recall:", macro_recall)
+    print("macro f1:", macro_f1)
+    outputs_metrics.append( [macro_overall_accuracy, macro_precision, macro_recall, macro_f1] )
 
     return outputs_metrics
 

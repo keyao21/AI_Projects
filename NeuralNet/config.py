@@ -1,4 +1,8 @@
 
+DATA_DIR_PATH = './data'
+NET_DIR_PATH = './nets'
+RESULTS_DIR_PATH = './results'
+
 WDBC_LRATE = 0.1
 WDBC_NEPOCH = 100
 
